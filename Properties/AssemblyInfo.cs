@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using MelonLoader;
-using TestMod;
+using Hover_AP;
 // ...
 [assembly: MelonInfo(typeof(ModMain), "Archipelago Randomizer", "0.0.1", "Archerist")]
 [assembly: MelonGame("FustyGame", "Hover")]

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using MelonLoader;
 using UnityEngine;
 using Archipelago.MultiClient.Net;
-namespace TestMod
+namespace Hover_AP
 {
     public class ModMain : MelonMod
     {
