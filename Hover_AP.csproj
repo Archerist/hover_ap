@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="0Harmony, Version=2.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>E:\SteamLibrary\steamapps\common\Hover\MelonLoader\0Harmony.dll</HintPath>
+    </Reference>
     <Reference Include="Archipelago.MultiClient.Net, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\Archipelago.MultiClient.Net.3.1.0\lib\net35\Archipelago.MultiClient.Net.dll</HintPath>
     </Reference>
