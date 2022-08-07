@@ -8,7 +8,7 @@ namespace Hover_AP
     public class ModMain : MelonMod
     {
 
-        private static Dictionary<string, string> apDict = new Dictionary<string, string>()
+        private static Dictionary<string, string> apServerInfo = new Dictionary<string, string>()
             {
                 {"url","archipelago.gg" },
                 {"port","38281" },
@@ -17,34 +17,14 @@ namespace Hover_AP
 
             };
 
+
+
         private ArchipelagoSession session;
         private MelonPreferences_Category apMelon;
         public override void OnApplicationStart()
         {
-            apMelon = MelonPreferences.CreateCategory("Archipelago");
-            apMelon.SetFilePath("UserData/HoverAP.cfg", true);
 
-            var copyDict = new Dictionary<string,string>(apDict);
-            
-            foreach (var kvp in apDict)
-            {
-                var entry = apMelon.GetEntry<string>(kvp.Key);
-                copyDict[kvp.Key] = entry is null ? apMelon.CreateEntry<string>(kvp.Key, kvp.Value).Value : entry.Value;
-            }
-
-            foreach(var kvp in copyDict)
-            {
-                apDict[kvp.Key] = kvp.Value;
-            }
-
-
-            session = ArchipelagoSessionFactory.CreateSession(apDict["url"], Convert.ToInt32(apDict["port"]));
-
-            LoggerInstance.Msg(apDict.ToString());
-
-            Login();
-
-
+            InitAP();
 
         }
 
@@ -79,24 +59,65 @@ namespace Hover_AP
 
         }
 
-        private bool Login()
+        private void InitAP()
         {
-            bool info = false;
+            apMelon = MelonPreferences.CreateCategory("Archipelago");
+            apMelon.SetFilePath("UserData/HoverAP.cfg", true);
+
+            var copyDict = new Dictionary<string, string>(apServerInfo);
+
+            foreach (var kvp in apServerInfo)
+            {
+                var entry = apMelon.GetEntry<string>(kvp.Key);
+                copyDict[kvp.Key] = entry is null ? apMelon.CreateEntry<string>(kvp.Key, kvp.Value).Value : entry.Value;
+            }
+
+            apServerInfo = copyDict;
             try
             {
-                foreach (var kvp in apDict)
+                session = ArchipelagoSessionFactory.CreateSession(apServerInfo["url"], Convert.ToInt32(apServerInfo["port"]));
+            } catch (Exception e)
+            {
+                LoggerInstance.Error(e.ToString());
+            }
+
+            Login();
+
+        }
+
+        private bool Login()
+        {
+            bool success = false;
+            try
+            {
+                foreach (var kvp in apServerInfo)
                 {
                     LoggerInstance.Msg($"{kvp.Key}: {kvp.Value}");
                 }
                 string[] tags = { "IgnoreGame" };
-                info = session.TryConnectAndLogin(
+                var info = session.TryConnectAndLogin(
                     "Minecraft",
-                    apDict["slot"],
+                    apServerInfo["slot"],
                     new Version(0, 3, 4),
                     Archipelago.MultiClient.Net.Enums.ItemsHandlingFlags.RemoteItems,
                     tags
-                    ).Successful;
-                LoggerInstance.Msg("login success {0}", info);
+                    );
+
+                success = info.Successful;
+
+                if(info is LoginFailure fail)
+                {
+                    foreach(var err in fail.Errors)
+                    {
+                        LoggerInstance.Error(err);
+                    }
+                }else if(info is LoginSuccessful loggedin)
+                {
+                    LoggerInstance.Msg("Slot: {0}", loggedin.Slot);
+                    LoggerInstance.Msg("Team: {0}", loggedin.Team);
+                }
+
+                LoggerInstance.Msg("login success {0}", success);
 
             }
             catch (Exception e)
@@ -104,7 +125,7 @@ namespace Hover_AP
                 LoggerInstance.Error(e.ToString());
             }
 
-            return info;
+            return success;
         }
     }
 }
