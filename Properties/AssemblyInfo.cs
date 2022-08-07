@@ -4,17 +4,17 @@ using System.Runtime.InteropServices;
 using MelonLoader;
 using Hover_AP;
 // ...
-[assembly: MelonInfo(typeof(ModMain), "Archipelago Randomizer", "0.0.1", "Archerist")]
+[assembly: MelonInfo(typeof(ModMain), "Hover_AP", "0.0.1", "Archerist")]
 [assembly: MelonGame("FustyGame", "Hover")]
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TestMod")]
+[assembly: AssemblyTitle("Hover_AP")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("TestMod")]
+[assembly: AssemblyProduct("Hover_AP")]
 [assembly: AssemblyCopyright("Copyright ©  2022")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
