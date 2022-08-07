@@ -33,16 +33,16 @@
   <ItemGroup>
     <Reference Include="0Harmony, Version=2.9.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>E:\SteamLibrary\steamapps\common\Hover\MelonLoader\0Harmony.dll</HintPath>
+      <HintPath>..\MelonLoader\0Harmony.dll</HintPath>
     </Reference>
     <Reference Include="Archipelago.MultiClient.Net, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\Archipelago.MultiClient.Net.3.1.0\lib\net35\Archipelago.MultiClient.Net.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>E:\SteamLibrary\steamapps\common\Hover\Hover_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\Hover_Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="MelonLoader">
-      <HintPath>E:\SteamLibrary\steamapps\common\Hover\MelonLoader\MelonLoader.dll</HintPath>
+      <HintPath>..\MelonLoader\MelonLoader.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\Archipelago.MultiClient.Net.3.1.0\lib\net35\Newtonsoft.Json.dll</HintPath>
@@ -54,7 +54,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
-      <HintPath>E:\SteamLibrary\steamapps\common\Hover\Hover_Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>..\Hover_Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="websocket-sharp, Version=1.0.2.34775, Culture=neutral, PublicKeyToken=5660b08a1845a91e, processorArchitecture=MSIL">
       <HintPath>packages\Archipelago.MultiClient.Net.3.1.0\lib\net35\websocket-sharp.dll</HintPath>
@@ -67,9 +67,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy /v /y TestMod.dll E:\SteamLibrary\steamapps\common\Hover\Mods</PostBuildEvent>
+    <PostBuildEvent>copy /v /y TestMod.dll ..\..\..\Mods</PostBuildEvent>
   </PropertyGroup>
 </Project>
