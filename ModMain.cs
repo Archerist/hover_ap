@@ -19,7 +19,7 @@ namespace Hover_AP
 
 
 
-        private ArchipelagoSession session;
+        public static ArchipelagoSession session;
         private MelonPreferences_Category apMelon;
         public override void OnApplicationStart()
         {
