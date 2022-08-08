@@ -24,7 +24,13 @@ namespace Hover_AP
         public override void OnApplicationStart()
         {
 
-            InitAP();
+            var success = InitAP();
+
+            if (success)
+            {
+
+            }
+
 
         }
 
@@ -59,7 +65,7 @@ namespace Hover_AP
 
         }
 
-        private void InitAP()
+        private bool InitAP()
         {
             apMelon = MelonPreferences.CreateCategory("Archipelago");
             apMelon.SetFilePath("UserData/HoverAP.cfg", true);
@@ -76,12 +82,16 @@ namespace Hover_AP
             try
             {
                 session = ArchipelagoSessionFactory.CreateSession(apServerInfo["url"], Convert.ToInt32(apServerInfo["port"]));
+              
             } catch (Exception e)
             {
                 LoggerInstance.Error(e.ToString());
+                LoggerInstance.Error("SessionFailed");
+
+                return false;
             }
 
-            Login();
+            return Login();
 
         }
 
