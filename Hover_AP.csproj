@@ -7,8 +7,8 @@
     <ProjectGuid>{12D21797-8098-4816-9DA5-26B8BD56A7E8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TestMod</RootNamespace>
-    <AssemblyName>TestMod</AssemblyName>
+    <RootNamespace>Hover_AP</RootNamespace>
+    <AssemblyName>Hover_AP</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -56,13 +56,18 @@
     <Reference Include="UnityEngine">
       <HintPath>..\Hover_Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Hover_Data\Managed\UnityEngine.UI.dll</HintPath>
+    </Reference>
     <Reference Include="websocket-sharp, Version=1.0.2.34775, Culture=neutral, PublicKeyToken=5660b08a1845a91e, processorArchitecture=MSIL">
       <HintPath>packages\Archipelago.MultiClient.Net.3.1.0\lib\net35\websocket-sharp.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Patches\InfoPatch.cs" />
     <Compile Include="ModMain.cs" />
-    <Compile Include="SaveManagerPatch.cs" />
+    <Compile Include="Patches\SaveManagerPatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -74,6 +79,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy /v /y TestMod.dll ..\..\..\Mods</PostBuildEvent>
+    <PostBuildEvent>copy /v /y Hover_AP.dll ..\..\..\Mods</PostBuildEvent>
   </PropertyGroup>
 </Project>
