@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using MelonLoader;
 using UnityEngine;
 using Archipelago.MultiClient.Net;
+using System.Linq;
+
 namespace Hover_AP
 {
     public class ModMain : MelonMod
@@ -16,21 +18,50 @@ namespace Hover_AP
                 {"password","" }
 
             };
+        public override void OnSceneWasLoaded(int buildIndex, string sceneName)
+        {
+            MelonLogger.Msg("OnSceneWasLoaded: " + buildIndex.ToString() + " | " + sceneName);
+            switch (buildIndex)
+            {
+                case 0:
+                    break;
+                case 10:
+                    Login();
+                    break;
+                default:
+                    break;
 
+            }
+            
+        }
 
 
         public static ArchipelagoSession session;
         private MelonPreferences_Category apMelon;
-        public override void OnApplicationStart()
+        public override void OnInitializeMelon()
         {
+            apMelon = MelonPreferences.CreateCategory("Archipelago");
+            apMelon.SetFilePath("UserData/HoverAP.cfg", true);
 
-            var success = InitAP();
+            var copyDict = new Dictionary<string, string>(apServerInfo);
 
-            if (success)
+            foreach (var kvp in apServerInfo)
             {
-
+                var entry = apMelon.GetEntry<string>(kvp.Key);
+                copyDict[kvp.Key] = entry is null ? apMelon.CreateEntry<string>(kvp.Key, kvp.Value).Value : entry.Value;
             }
 
+            apServerInfo = copyDict;
+            try
+            {
+                session = ArchipelagoSessionFactory.CreateSession(apServerInfo["url"], Convert.ToInt32(apServerInfo["port"]));
+
+            }
+            catch (Exception e)
+            {
+                LoggerInstance.Error(e.ToString());
+                LoggerInstance.Error("SessionFailed");
+            }
 
         }
 
@@ -49,55 +80,16 @@ namespace Hover_AP
 
             if (Input.GetKeyDown(KeyCode.F8))
             {
+                var playerList = session.Players.AllPlayers.Select(player => player.Name).ToArray();
 
-                var playerList = new List<string>();
-
-                foreach (var player in session.Players.AllPlayers)
-                {
-                    playerList.Add(player.Alias);
-                }
-
-                LoggerInstance.Msg(String.Join(", ", playerList.ToArray() ));
-
-
+                LoggerInstance.Msg(String.Join(", ", playerList ));
             }
 
 
         }
 
-        private bool InitAP()
+        private void Login()
         {
-            apMelon = MelonPreferences.CreateCategory("Archipelago");
-            apMelon.SetFilePath("UserData/HoverAP.cfg", true);
-
-            var copyDict = new Dictionary<string, string>(apServerInfo);
-
-            foreach (var kvp in apServerInfo)
-            {
-                var entry = apMelon.GetEntry<string>(kvp.Key);
-                copyDict[kvp.Key] = entry is null ? apMelon.CreateEntry<string>(kvp.Key, kvp.Value).Value : entry.Value;
-            }
-
-            apServerInfo = copyDict;
-            try
-            {
-                session = ArchipelagoSessionFactory.CreateSession(apServerInfo["url"], Convert.ToInt32(apServerInfo["port"]));
-              
-            } catch (Exception e)
-            {
-                LoggerInstance.Error(e.ToString());
-                LoggerInstance.Error("SessionFailed");
-
-                return false;
-            }
-
-            return Login();
-
-        }
-
-        private bool Login()
-        {
-            bool success = false;
             try
             {
                 foreach (var kvp in apServerInfo)
@@ -106,14 +98,11 @@ namespace Hover_AP
                 }
                 string[] tags = { "IgnoreGame" };
                 var info = session.TryConnectAndLogin(
-                    "Minecraft",
+                    "Timespinner",
                     apServerInfo["slot"],
-                    new Version(0, 3, 4),
-                    Archipelago.MultiClient.Net.Enums.ItemsHandlingFlags.RemoteItems,
-                    tags
+                    Archipelago.MultiClient.Net.Enums.ItemsHandlingFlags.RemoteItems
                     );
 
-                success = info.Successful;
 
                 if(info is LoginFailure fail)
                 {
@@ -127,15 +116,11 @@ namespace Hover_AP
                     LoggerInstance.Msg("Team: {0}", loggedin.Team);
                 }
 
-                LoggerInstance.Msg("login success {0}", success);
-
             }
             catch (Exception e)
             {
                 LoggerInstance.Error(e.ToString());
             }
-
-            return success;
         }
     }
 }
